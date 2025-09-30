@@ -48,6 +48,7 @@ import org.fossify.commons.helpers.LICENSE_PATTERN
 import org.fossify.commons.helpers.LICENSE_REPRINT
 import org.fossify.commons.helpers.LICENSE_ZIP4J
 import org.fossify.commons.helpers.PERMISSION_WRITE_STORAGE
+import org.fossify.commons.helpers.TAB_FAVORITES
 import org.fossify.commons.helpers.TAB_FILES
 import org.fossify.commons.helpers.TAB_RECENT_FILES
 import org.fossify.commons.helpers.TAB_STORAGE_ANALYSIS
@@ -65,6 +66,7 @@ import org.fossify.filemanager.dialogs.ChangeViewTypeDialog
 import org.fossify.filemanager.dialogs.InsertFilenameDialog
 import org.fossify.filemanager.extensions.config
 import org.fossify.filemanager.extensions.tryOpenPathIntent
+import org.fossify.filemanager.fragments.FavoritesFragment
 import org.fossify.filemanager.fragments.ItemsFragment
 import org.fossify.filemanager.fragments.MyViewPagerFragment
 import org.fossify.filemanager.fragments.RecentsFragment
@@ -164,8 +166,9 @@ class MainActivity : SimpleActivity() {
         val currentFragment = getCurrentFragment()
         if (binding.mainMenu.isSearchOpen) {
             binding.mainMenu.closeSearch()
-        } else if (currentFragment is RecentsFragment || currentFragment is StorageFragment) {
+        } else if (currentFragment is RecentsFragment || currentFragment is StorageFragment || currentFragment is FavoritesFragment) {
             super.onBackPressed()
+            //TODO
         } else if ((currentFragment as ItemsFragment).getBreadcrumbs().getItemCount() <= 1) {
             if (!wasBackJustPressed && config.pressBackTwice) {
                 wasBackJustPressed = true
@@ -363,9 +366,9 @@ class MainActivity : SimpleActivity() {
         binding.mainTabsHolder.removeAllTabs()
         val action = intent.action
         val isPickFileIntent = action == RingtoneManager.ACTION_RINGTONE_PICKER
-                || action == Intent.ACTION_GET_CONTENT
-                || action == Intent.ACTION_PICK
-                || action == Intent.ACTION_OPEN_DOCUMENT
+            || action == Intent.ACTION_GET_CONTENT
+            || action == Intent.ACTION_PICK
+            || action == Intent.ACTION_OPEN_DOCUMENT
         val isCreateDocumentIntent = action == Intent.ACTION_CREATE_DOCUMENT
 
         if (isPickFileIntent) {
@@ -427,7 +430,8 @@ class MainActivity : SimpleActivity() {
         val drawableId = when (position) {
             0 -> R.drawable.ic_folder_vector
             1 -> R.drawable.ic_clock_vector
-            else -> R.drawable.ic_storage_vector
+            2 -> R.drawable.ic_storage_vector
+            else -> R.drawable.ic_folder_open_vector
         }
 
         return resources.getColoredDrawableWithColor(drawableId, getProperTextColor())
@@ -437,7 +441,8 @@ class MainActivity : SimpleActivity() {
         val stringId = when (position) {
             0 -> R.string.files_tab
             1 -> R.string.recents
-            else -> R.string.storage
+            2 -> R.string.storage
+            else -> R.string.favorites
         }
 
         return resources.getString(stringId)
@@ -697,6 +702,10 @@ class MainActivity : SimpleActivity() {
             icons.add(R.drawable.ic_storage_vector)
         }
 
+        if (showTabs and TAB_FAVORITES != 0) {
+            icons.add(R.drawable.ic_folder_open_vector)
+        }
+
         return icons
     }
 
@@ -716,14 +725,19 @@ class MainActivity : SimpleActivity() {
             icons.add(R.drawable.ic_storage_vector)
         }
 
+        if (showTabs and TAB_FAVORITES != 0) {
+            icons.add(R.drawable.ic_folder_open_vector)
+        }
+
         return icons
     }
 
     private fun getRecentsFragment() = findViewById<RecentsFragment>(R.id.recents_fragment)
     private fun getItemsFragment() = findViewById<ItemsFragment>(R.id.items_fragment)
     private fun getStorageFragment() = findViewById<StorageFragment>(R.id.storage_fragment)
+    private fun getFavoritesFragment() = findViewById< FavoritesFragment>(R.id.favorites_fragment)
     private fun getAllFragments(): ArrayList<MyViewPagerFragment<*>?> =
-        arrayListOf(getItemsFragment(), getRecentsFragment(), getStorageFragment())
+        arrayListOf(getItemsFragment(), getRecentsFragment(), getStorageFragment(), getFavoritesFragment())
 
     private fun getCurrentFragment(): MyViewPagerFragment<*>? {
         val showTabs = config.showTabs
@@ -740,10 +754,14 @@ class MainActivity : SimpleActivity() {
             fragments.add(getStorageFragment())
         }
 
+        if (showTabs and TAB_FAVORITES != 0) {
+            fragments.add(getFavoritesFragment())
+        }
+
         return fragments.getOrNull(binding.mainViewPager.currentItem)
     }
 
-    private fun getTabsList() = arrayListOf(TAB_FILES, TAB_RECENT_FILES, TAB_STORAGE_ANALYSIS)
+    private fun getTabsList() = arrayListOf(TAB_FILES, TAB_RECENT_FILES, TAB_STORAGE_ANALYSIS, TAB_FAVORITES)
 
     private fun checkWhatsNewDialog() {
         arrayListOf<Release>().apply {

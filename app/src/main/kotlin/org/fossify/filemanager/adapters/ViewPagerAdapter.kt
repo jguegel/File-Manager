@@ -9,6 +9,7 @@ import org.fossify.commons.extensions.getProperTextColor
 import org.fossify.commons.helpers.TAB_FILES
 import org.fossify.commons.helpers.TAB_RECENT_FILES
 import org.fossify.commons.helpers.TAB_STORAGE_ANALYSIS
+import org.fossify.commons.helpers.TAB_FAVORITES
 import org.fossify.filemanager.R
 import org.fossify.filemanager.activities.SimpleActivity
 import org.fossify.filemanager.extensions.config
@@ -23,8 +24,8 @@ class ViewPagerAdapter(val activity: SimpleActivity, val tabsToShow: ArrayList<I
         (view as MyViewPagerFragment<*>).apply {
             val isPickRingtoneIntent = activity.intent.action == RingtoneManager.ACTION_RINGTONE_PICKER
             val isGetContentIntent = activity.intent.action == Intent.ACTION_GET_CONTENT
-                    || activity.intent.action == Intent.ACTION_PICK
-                    || activity.intent.action == Intent.ACTION_OPEN_DOCUMENT
+                || activity.intent.action == Intent.ACTION_PICK
+                || activity.intent.action == Intent.ACTION_OPEN_DOCUMENT
             val isCreateDocumentIntent = activity.intent.action == Intent.ACTION_CREATE_DOCUMENT
             val allowPickingMultipleIntent = activity.intent.getBooleanExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
             val getContentMimeType = if (isGetContentIntent) {
@@ -74,6 +75,10 @@ class ViewPagerAdapter(val activity: SimpleActivity, val tabsToShow: ArrayList<I
 
         if (showTabs and TAB_STORAGE_ANALYSIS != 0) {
             fragments.add(R.layout.storage_fragment)
+        }
+
+        if (showTabs and TAB_FAVORITES != 0) {
+            fragments.add(R.layout.favorites_fragment)
         }
 
         return fragments[position]

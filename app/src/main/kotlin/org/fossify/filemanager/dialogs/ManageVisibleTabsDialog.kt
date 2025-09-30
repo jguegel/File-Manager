@@ -3,6 +3,7 @@ package org.fossify.filemanager.dialogs
 import org.fossify.commons.activities.BaseSimpleActivity
 import org.fossify.commons.extensions.getAlertDialogBuilder
 import org.fossify.commons.extensions.setupDialogStuff
+import org.fossify.commons.helpers.TAB_FAVORITES
 import org.fossify.commons.helpers.TAB_FILES
 import org.fossify.commons.helpers.TAB_RECENT_FILES
 import org.fossify.commons.helpers.TAB_STORAGE_ANALYSIS
@@ -21,6 +22,7 @@ class ManageVisibleTabsDialog(val activity: BaseSimpleActivity) {
             put(TAB_FILES, R.id.manage_visible_tabs_files)
             put(TAB_RECENT_FILES, R.id.manage_visible_tabs_recent_files)
             put(TAB_STORAGE_ANALYSIS, R.id.manage_visible_tabs_storage_analysis)
+            put(TAB_FAVORITES, R.id.manage_visible_tabs_favorites)
         }
 
         val showTabs = activity.config.showTabs

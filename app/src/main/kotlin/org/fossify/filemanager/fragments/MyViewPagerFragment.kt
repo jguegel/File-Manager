@@ -10,6 +10,7 @@ import org.fossify.commons.views.MyFloatingActionButton
 import org.fossify.filemanager.R
 import org.fossify.filemanager.activities.MainActivity
 import org.fossify.filemanager.activities.SimpleActivity
+import org.fossify.filemanager.databinding.FavoritesFragmentBinding
 import org.fossify.filemanager.databinding.ItemsFragmentBinding
 import org.fossify.filemanager.databinding.RecentsFragmentBinding
 import org.fossify.filemanager.databinding.StorageFragmentBinding
@@ -109,6 +110,10 @@ abstract class MyViewPagerFragment<BINDING : MyViewPagerFragment.InnerBinding>(c
     }
 
     class StorageInnerBinding(val binding: StorageFragmentBinding) : InnerBinding {
+        override val itemsFab: MyFloatingActionButton? = null
+    }
+
+    class FavoriteInnerBinding(val binding: FavoritesFragmentBinding) : InnerBinding {
         override val itemsFab: MyFloatingActionButton? = null
     }
 }

@@ -3,6 +3,7 @@ package org.fossify.filemanager.helpers
 import org.fossify.commons.helpers.TAB_FILES
 import org.fossify.commons.helpers.TAB_RECENT_FILES
 import org.fossify.commons.helpers.TAB_STORAGE_ANALYSIS
+import org.fossify.commons.helpers.TAB_FAVORITES
 import org.fossify.commons.models.FileDirItem
 import org.fossify.filemanager.models.ListItem
 
@@ -31,7 +32,7 @@ const val OPEN_AS_AUDIO = 3
 const val OPEN_AS_VIDEO = 4
 const val OPEN_AS_OTHER = 5
 
-const val ALL_TABS_MASK = TAB_FILES or TAB_RECENT_FILES or TAB_STORAGE_ANALYSIS
+const val ALL_TABS_MASK = TAB_FILES or TAB_RECENT_FILES or TAB_STORAGE_ANALYSIS or TAB_FAVORITES
 
 const val IMAGES = "images"
 const val VIDEOS = "videos"
