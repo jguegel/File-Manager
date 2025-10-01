@@ -22,7 +22,7 @@ class FavoritesFragment(context: Context, attributeSet: AttributeSet) :
     private var storedFavorites = ArrayList<ListItem>()
     private var lastSearchedText = ""
     private lateinit var binding: FavoritesFragmentBinding
-    private var filesIgnoringSearch = ArrayList<ListItem>()
+    private var favoritesIgnoringSearch = ArrayList<ListItem>()
 
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -66,7 +66,7 @@ class FavoritesFragment(context: Context, attributeSet: AttributeSet) :
 
     override fun refreshFragment() {
         val favoritePaths = context?.config?.favorites ?: emptySet()
-        val listItems = ArrayList<ListItem>().apply {
+        val listFavorites = ArrayList<ListItem>().apply {
             favoritePaths.forEach { path ->
                 val file = File(path)
                 if (file.exists()) {
@@ -85,7 +85,7 @@ class FavoritesFragment(context: Context, attributeSet: AttributeSet) :
                 }
             }
         }
-        addFavorites(listItems)
+        addFavorites(listFavorites)
     }
 
     override fun deleteFiles(files: ArrayList<FileDirItem>) {
@@ -119,7 +119,7 @@ class FavoritesFragment(context: Context, attributeSet: AttributeSet) :
     override fun searchQueryChanged(text: String) {
         lastSearchedText = text
         val normalizedText = text.normalizeString()
-        val filtered = filesIgnoringSearch.filter {
+        val filtered = favoritesIgnoringSearch.filter {
             it.mName.normalizeString().contains(normalizedText, true)
         }.toMutableList() as ArrayList<ListItem>
 
@@ -135,7 +135,7 @@ class FavoritesFragment(context: Context, attributeSet: AttributeSet) :
         activity?.runOnUiThread {
             binding.favoritesSwipeRefresh.isRefreshing = false
             storedFavorites = items
-            filesIgnoringSearch = ArrayList(storedFavorites)
+            favoritesIgnoringSearch = ArrayList(storedFavorites)
 
             ItemsAdapter(
                 activity as SimpleActivity,
@@ -147,8 +147,8 @@ class FavoritesFragment(context: Context, attributeSet: AttributeSet) :
             ) {
                 if (it is FileDirItem) {
                     if (it.isDirectory) {
-                        (activity as? MainActivity)?.createFavorite()
-                    }
+                        (activity as? MainActivity)?.openDirectoryInFilesTab(it.path)
+                    } // TODO define fallback
                 }
             }.apply {
                 binding.favoritesList.adapter = this

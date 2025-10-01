@@ -12,7 +12,6 @@ import android.widget.TextView
 import androidx.viewpager.widget.ViewPager
 import com.stericson.RootTools.RootTools
 import me.grantland.widget.AutofitHelper
-import org.fossify.commons.dialogs.FilePickerDialog
 import org.fossify.commons.dialogs.RadioGroupDialog
 import org.fossify.commons.extensions.appLaunched
 import org.fossify.commons.extensions.appLockManager
@@ -473,6 +472,13 @@ class MainActivity : SimpleActivity() {
         getItemsFragment()?.openPath(newPath, forceRefresh)
     }
 
+    fun openDirectoryInFilesTab(path: String) {
+        binding.mainViewPager.currentItem = 0
+        binding.mainViewPager.post {
+            getItemsFragment()?.openPath(path, true)
+        }
+    }
+
     private fun goHome() {
         if (config.homeFolder != getCurrentFragment()!!.currentPath) {
             openPath(config.homeFolder)
@@ -541,12 +547,6 @@ class MainActivity : SimpleActivity() {
 
         RadioGroupDialog(this, items, currFavoriteIndex, R.string.go_to_favorite) {
             openPath(it.toString())
-        }
-    }
-
-    fun createFavorite() {
-        FilePickerDialog(this, pickFile = false, showHidden = config.shouldShowHidden(), canAddShowHiddenButton = true) {
-            config.addFavorite(it)
         }
     }
 
