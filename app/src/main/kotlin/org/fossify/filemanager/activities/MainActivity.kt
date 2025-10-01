@@ -458,7 +458,7 @@ class MainActivity : SimpleActivity() {
         }
     }
 
-    fun openPath(path: String, forceRefresh: Boolean = false) {
+    private fun openPath(path: String, forceRefresh: Boolean = false) {
         var newPath = path
         val file = File(path)
         if (config.OTGPath.isNotEmpty() && config.OTGPath == path.trimEnd('/')) {
