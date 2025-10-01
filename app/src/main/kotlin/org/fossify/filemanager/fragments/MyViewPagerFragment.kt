@@ -29,6 +29,7 @@ abstract class MyViewPagerFragment<BINDING : MyViewPagerFragment.InnerBinding>(c
     var isPickMultipleIntent = false
     var wantedMimeTypes = listOf("")
     protected var isCreateDocumentIntent = false
+    protected var isCreateFavoriteIntent = false
     protected lateinit var innerBinding: BINDING
 
     protected fun clickedPath(path: String) {
@@ -113,7 +114,7 @@ abstract class MyViewPagerFragment<BINDING : MyViewPagerFragment.InnerBinding>(c
         override val itemsFab: MyFloatingActionButton? = null
     }
 
-    class FavoriteInnerBinding(val binding: FavoritesFragmentBinding) : InnerBinding {
+    class FavoritesInnerBinding(val binding: FavoritesFragmentBinding) : InnerBinding {
         override val itemsFab: MyFloatingActionButton? = null
     }
 }

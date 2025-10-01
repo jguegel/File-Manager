@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.viewpager.widget.ViewPager
 import com.stericson.RootTools.RootTools
 import me.grantland.widget.AutofitHelper
+import org.fossify.commons.dialogs.FilePickerDialog
 import org.fossify.commons.dialogs.RadioGroupDialog
 import org.fossify.commons.extensions.appLaunched
 import org.fossify.commons.extensions.appLockManager
@@ -168,7 +169,6 @@ class MainActivity : SimpleActivity() {
             binding.mainMenu.closeSearch()
         } else if (currentFragment is RecentsFragment || currentFragment is StorageFragment || currentFragment is FavoritesFragment) {
             super.onBackPressed()
-            //TODO
         } else if ((currentFragment as ItemsFragment).getBreadcrumbs().getItemCount() <= 1) {
             if (!wasBackJustPressed && config.pressBackTwice) {
                 wasBackJustPressed = true
@@ -459,7 +459,7 @@ class MainActivity : SimpleActivity() {
         }
     }
 
-    private fun openPath(path: String, forceRefresh: Boolean = false) {
+    fun openPath(path: String, forceRefresh: Boolean = false) {
         var newPath = path
         val file = File(path)
         if (config.OTGPath.isNotEmpty() && config.OTGPath == path.trimEnd('/')) {
@@ -541,6 +541,12 @@ class MainActivity : SimpleActivity() {
 
         RadioGroupDialog(this, items, currFavoriteIndex, R.string.go_to_favorite) {
             openPath(it.toString())
+        }
+    }
+
+    fun createFavorite() {
+        FilePickerDialog(this, pickFile = false, showHidden = config.shouldShowHidden(), canAddShowHiddenButton = true) {
+            config.addFavorite(it)
         }
     }
 
@@ -735,7 +741,7 @@ class MainActivity : SimpleActivity() {
     private fun getRecentsFragment() = findViewById<RecentsFragment>(R.id.recents_fragment)
     private fun getItemsFragment() = findViewById<ItemsFragment>(R.id.items_fragment)
     private fun getStorageFragment() = findViewById<StorageFragment>(R.id.storage_fragment)
-    private fun getFavoritesFragment() = findViewById< FavoritesFragment>(R.id.favorites_fragment)
+    private fun getFavoritesFragment() = findViewById<FavoritesFragment>(R.id.favorites_fragment)
     private fun getAllFragments(): ArrayList<MyViewPagerFragment<*>?> =
         arrayListOf(getItemsFragment(), getRecentsFragment(), getStorageFragment(), getFavoritesFragment())
 
