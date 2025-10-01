@@ -175,7 +175,6 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
         }
     }
 
-
     private fun getScrollState() = getRecyclerLayoutManager().onSaveInstanceState()
 
     private fun getRecyclerLayoutManager() = (binding.itemsList.layoutManager as MyGridLayoutManager)
