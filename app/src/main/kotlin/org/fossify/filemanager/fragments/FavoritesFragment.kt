@@ -99,10 +99,6 @@ class FavoritesFragment(context: Context, attributeSet: AttributeSet) :
     }
 
     override fun deleteFiles(files: ArrayList<FileDirItem>) {
-        files.forEach { file ->
-            context?.config?.removeFavorite(file.path)
-        }
-        refreshFragment()
     }
 
     override fun columnCountChanged() {
