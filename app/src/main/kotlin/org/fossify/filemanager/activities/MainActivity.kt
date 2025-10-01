@@ -339,7 +339,7 @@ class MainActivity : SimpleActivity() {
     private fun initFragments() {
         binding.mainViewPager.apply {
             adapter = ViewPagerAdapter(this@MainActivity, mTabsToShow)
-            offscreenPageLimit = 2
+            offscreenPageLimit = 3
             addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrollStateChanged(state: Int) {}
 
