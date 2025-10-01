@@ -33,8 +33,6 @@ class FavoritesFragment(context: Context, attributeSet: AttributeSet) :
         super.onFinishInflate()
         binding = FavoritesFragmentBinding.bind(this)
         innerBinding = FavoritesInnerBinding(binding)
-
-        setupLayoutManager()
     }
 
     override fun setupFragment(activity: SimpleActivity) {
