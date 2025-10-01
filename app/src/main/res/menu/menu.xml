@@ -9,16 +9,6 @@
         android:title="@string/go_to_home_folder"
         app:showAsAction="always" />
     <item
-        android:id="@+id/go_to_favorite"
-        android:icon="@drawable/ic_folder_open_vector"
-        android:title="@string/go_to_favorite"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/sort"
-        android:icon="@drawable/ic_sort_vector"
-        android:title="@string/sort_by"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/add_favorite"
         android:icon="@drawable/ic_star_outline_vector"
         android:title="@string/add_to_favorites"
@@ -27,6 +17,11 @@
         android:id="@+id/remove_favorite"
         android:icon="@drawable/ic_star_vector"
         android:title="@string/remove_from_favorites"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/sort"
+        android:icon="@drawable/ic_sort_vector"
+        android:title="@string/sort_by"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/toggle_filename"

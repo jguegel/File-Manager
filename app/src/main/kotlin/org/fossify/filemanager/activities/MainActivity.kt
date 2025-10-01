@@ -30,7 +30,6 @@ import org.fossify.commons.extensions.handleHiddenFolderPasswordProtection
 import org.fossify.commons.extensions.hasOTGConnected
 import org.fossify.commons.extensions.hasPermission
 import org.fossify.commons.extensions.hideKeyboard
-import org.fossify.commons.extensions.humanizePath
 import org.fossify.commons.extensions.internalStoragePath
 import org.fossify.commons.extensions.isPathOnOTG
 import org.fossify.commons.extensions.isPathOnSD
@@ -197,7 +196,6 @@ class MainActivity : SimpleActivity() {
 
             findItem(R.id.add_favorite).isVisible = currentFragment is ItemsFragment && !favorites.contains(currentFragment.currentPath)
             findItem(R.id.remove_favorite).isVisible = currentFragment is ItemsFragment && favorites.contains(currentFragment.currentPath)
-            findItem(R.id.go_to_favorite).isVisible = currentFragment is ItemsFragment && favorites.isNotEmpty()
 
             findItem(R.id.toggle_filename).isVisible = currentViewType == VIEW_TYPE_GRID && currentFragment !is StorageFragment
             findItem(R.id.go_home).isVisible = currentFragment is ItemsFragment && currentFragment.currentPath != config.homeFolder
@@ -237,7 +235,6 @@ class MainActivity : SimpleActivity() {
 
                 when (menuItem.itemId) {
                     R.id.go_home -> goHome()
-                    R.id.go_to_favorite -> goToFavorite()
                     R.id.sort -> showSortingDialog()
                     R.id.add_favorite -> addFavorite()
                     R.id.remove_favorite -> removeFavorite()
@@ -532,24 +529,6 @@ class MainActivity : SimpleActivity() {
         }
     }
 
-    private fun goToFavorite() {
-        val favorites = config.favorites
-        val items = ArrayList<RadioItem>(favorites.size)
-        var currFavoriteIndex = -1
-
-        favorites.forEachIndexed { index, path ->
-            val visiblePath = humanizePath(path).replace("/", " / ")
-            items.add(RadioItem(index, visiblePath, path))
-            if (path == getCurrentFragment()!!.currentPath) {
-                currFavoriteIndex = index
-            }
-        }
-
-        RadioGroupDialog(this, items, currFavoriteIndex, R.string.go_to_favorite) {
-            openPath(it.toString())
-        }
-    }
-
     private fun setAsHome() {
         config.homeFolder = getCurrentFragment()!!.currentPath
         toast(R.string.home_folder_updated)
@@ -709,7 +688,7 @@ class MainActivity : SimpleActivity() {
         }
 
         if (showTabs and TAB_FAVORITES != 0) {
-            icons.add(R.drawable.ic_folder_open_vector)
+            icons.add(R.drawable.ic_star_outline_vector)
         }
 
         return icons
@@ -732,7 +711,7 @@ class MainActivity : SimpleActivity() {
         }
 
         if (showTabs and TAB_FAVORITES != 0) {
-            icons.add(R.drawable.ic_folder_open_vector)
+            icons.add(R.drawable.ic_star_outline_vector)
         }
 
         return icons

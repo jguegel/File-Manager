@@ -32,7 +32,6 @@
                 android:id="@+id/favorites_placeholder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/breadcrumbs"
                 android:layout_centerHorizontal="true"
                 android:alpha="0.8"
                 android:gravity="center"
@@ -62,7 +61,8 @@
                 android:id="@+id/favorites_swipe_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/favorites_placeholder">
+                android:layout_above="@+id/favorites_fab"
+                tools:ignore="NotSibling">
 
                 <com.qtalk.recyclerviewfastscroller.RecyclerViewFastScroller
                     android:id="@+id/favorites_fastscroller"

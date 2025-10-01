@@ -98,6 +98,7 @@ class RecentsFragment(context: Context, attributeSet: AttributeSet) : MyViewPage
         }
 
         binding.recentsSwipeRefresh.isEnabled = lastSearchedText.isEmpty() && activity?.config?.enablePullToRefresh != false
+        refreshFragment()
     }
 
     private fun setupLayoutManager() {

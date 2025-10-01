@@ -71,6 +71,8 @@ class FavoritesFragment(context: Context, attributeSet: AttributeSet) :
 
         binding.favoritesSwipeRefresh.isEnabled =
             lastSearchedText.isEmpty() && activity?.config?.enablePullToRefresh != false
+
+        refreshFragment()
     }
 
     override fun refreshFragment() {
