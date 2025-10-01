@@ -464,7 +464,7 @@ class MainActivity : SimpleActivity() {
         if (config.OTGPath.isNotEmpty() && config.OTGPath == path.trimEnd('/')) {
             newPath = path
         } else if (file.exists() && !file.isDirectory) {
-            newPath = file.parent
+            newPath = file.parent ?: internalStoragePath
         } else if (!file.exists() && !isPathOnOTG(newPath)) {
             newPath = internalStoragePath
         }
@@ -475,7 +475,7 @@ class MainActivity : SimpleActivity() {
     fun openDirectoryInFilesTab(path: String) {
         binding.mainViewPager.currentItem = 0
         binding.mainViewPager.post {
-            getItemsFragment()?.openPath(path, true)
+            openPath(path, true)
         }
     }
 

@@ -34,7 +34,6 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
     private var lastSearchedText = ""
     private var scrollStates = HashMap<String, Parcelable>()
     private var zoomListener: MyRecyclerView.MyZoomListener? = null
-
     private var storedItems = ArrayList<ListItem>()
     private var itemsIgnoringSearch = ArrayList<ListItem>()
     private lateinit var binding: ItemsFragmentBinding
@@ -58,6 +57,32 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
                         createNewItem()
                     }
                 }
+
+                if (itemsList.adapter == null) {
+                    ItemsAdapter(
+                        activity,
+                        ArrayList(),
+                        this@ItemsFragment,
+                        binding.itemsList,
+                        isPickMultipleIntent,
+                        binding.itemsSwipeRefresh
+                    ) { clickedItem ->
+                        if ((clickedItem as? ListItem)?.isSectionTitle == true) {
+                            openDirectory(clickedItem.mPath)
+                            searchClosed()
+                        } else {
+                            itemClicked(clickedItem as FileDirItem)
+                        }
+                    }.apply {
+                        binding.itemsList.adapter = this
+                    }
+                }
+            }
+
+            if (currentPath.isEmpty()) {
+                openPath(context!!.config.homeFolder)
+            } else {
+                refreshFragment()
             }
         }
     }
@@ -154,18 +179,20 @@ class ItemsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerF
             storedItems = items
             if (binding.itemsList.adapter == null) {
                 binding.breadcrumbs.updateFontSize(context!!.getTextSize(), true)
-            }
 
-            ItemsAdapter(activity as SimpleActivity, storedItems, this, binding.itemsList, isPickMultipleIntent, binding.itemsSwipeRefresh) {
-                if ((it as? ListItem)?.isSectionTitle == true) {
-                    openDirectory(it.mPath)
-                    searchClosed()
-                } else {
-                    itemClicked(it as FileDirItem)
+                ItemsAdapter(activity as SimpleActivity, storedItems, this, binding.itemsList, isPickMultipleIntent, binding.itemsSwipeRefresh) {
+                    if ((it as? ListItem)?.isSectionTitle == true) {
+                        openDirectory(it.mPath)
+                        searchClosed()
+                    } else {
+                        itemClicked(it as FileDirItem)
+                    }
+                }.apply {
+                    setupZoomListener(zoomListener)
+                    binding.itemsList.adapter = this
                 }
-            }.apply {
-                setupZoomListener(zoomListener)
-                binding.itemsList.adapter = this
+            } else {
+                getRecyclerAdapter()?.updateItems(items)
             }
 
             if (context.areSystemAnimationsEnabled) {

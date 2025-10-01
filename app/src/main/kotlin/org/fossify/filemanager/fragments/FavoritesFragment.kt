@@ -144,11 +144,9 @@ class FavoritesFragment(context: Context, attributeSet: AttributeSet) :
                 binding.favoritesList,
                 isPickMultipleIntent,
                 binding.favoritesSwipeRefresh
-            ) {
-                if (it is FileDirItem) {
-                    if (it.isDirectory) {
-                        (activity as? MainActivity)?.openDirectoryInFilesTab(it.path)
-                    } // TODO define fallback
+            ) { clickedItem ->
+                (clickedItem as? FileDirItem)?.let { fileDirItem ->
+                    (activity as? MainActivity)?.openDirectoryInFilesTab(fileDirItem.path)
                 }
             }.apply {
                 binding.favoritesList.adapter = this
