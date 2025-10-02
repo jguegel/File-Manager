@@ -57,8 +57,7 @@ class FavoritesFragment(context: Context, attributeSet: AttributeSet) :
     }
 
     override fun onResume(textColor: Int) {
-        binding.favoritesPlaceholder.setTextColor(textColor)
-
+        context!!.updateTextColors(this)
         getRecyclerAdapter()?.apply {
             updatePrimaryColor()
             updateTextColor(textColor)
