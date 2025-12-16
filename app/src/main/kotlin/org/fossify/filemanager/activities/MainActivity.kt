@@ -445,14 +445,25 @@ class MainActivity : SimpleActivity() {
 
     private fun checkOTGPath() {
         ensureBackgroundThread {
-            if (!config.wasOTGHandled && hasPermission(PERMISSION_WRITE_STORAGE) && hasOTGConnected() && config.OTGPath.isEmpty()) {
-                getStorageDirectories().firstOrNull { it.trimEnd('/') != internalStoragePath && it.trimEnd('/') != sdCardPath }?.apply {
+            if (!hasOTGConnected()) {
+                config.OTGPath = ""
+                config.wasOTGHandled = false
+                return@ensureBackgroundThread
+            }
+
+            if (!config.wasOTGHandled || config.OTGPath.isEmpty()) {
+                val newOTG = getStorageDirectories().firstOrNull {
+                    it.trimEnd('/') != internalStoragePath && it.trimEnd('/') != sdCardPath
+                }
+
+                if (newOTG != null) {
                     config.wasOTGHandled = true
-                    config.OTGPath = trimEnd('/')
+                    config.OTGPath = newOTG.trimEnd('/')
                 }
             }
         }
     }
+
 
     private fun openPath(path: String, forceRefresh: Boolean = false) {
         var newPath = path
